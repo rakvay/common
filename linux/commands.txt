@@ -1,0 +1,319 @@
+скрипт, чтобы быстро посмотреть, кто занимает оперативную память:
+ps axo rss,comm,pid | awk '{ proc_list[$2] += $1; } END { for (proc in proc_list) { printf("%d\t%s\n", proc_list[proc],proc); }}' | sort -n | tail -n 10 | sort -rn | awk '{$1/=1024;printf "%.0fMB\t",$1}{print $2}'
+
+утилита для мониторинга, netdata
+bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+
+Проверить срок действия сертификата:
+echo | openssl s_client -connect redhat.com:443 2>/dev/null | openssl x509 -noout -dates
+
+vim блочное выделение
+CTRL+v - стрелками выделяем текст - y (копировать) - p (вставить)
+
+На сервере К которому подключаемся по SSH права на каталог ~/.ssh должны быть 700, а на файл .ssh/authorized_keys — 600:
+chmod 700 .ssh/
+chmod 600 .ssh/authorized_keys
+chown -R username:username /home/username/.ssh
+
+Автодополнение команд для root
+должен быть установлен bash-completion
+в /root/.bashrc добавить строку complete -cf sudo
+в рута переходить sudo -i   (если sudo -s не работает)
+
+Выполнить bash команды из консоли mysql
+\! ls -l
+\! bash   -   перейти в консоль системы (потом exit для выхода)
+
+Узнать свой внешний IP-адрес
+curl ident.me
+     ipinfo.io
+     2ip.ua
+
+Посмотреть наиболее часто выполняемые команды
+    history | awk '{print $2}' | sort | uniq -c | sort -rn | head
+
+Показать список только директорий
+    ls -dl */
+
+Показать 10 папок наибольшего размера
+    du -hs /var/* | sort -hr | head
+
+Удалить все, кроме файла test.txt
+    rm -f !(test.txt)
+
+Веб-сервер на python и начинает отдавать файлы
+    python3 -m http.server
+
+Смотреть логи в реальном времени, аналог tail -f
+    less +F somefile
+
+Запостить текст из консоли в браузер (чтобы скинуть ссылку другу)
+    ps aux | nc termbin.com 9999
+    less vpn.yml | nc termbin.com 9999
+можно добавить alias для частого использования alias tb='nc termbin.com 9999'
+
+Просмотр, какие приложения потребляют трафик (утилиты iftop и nethogs дают более подробную информацию)
+    ss -p
+
+Сайт по шагам показывает процесс установления TLS-соединения
+    https://tls.ulfheim.net/
+
+Завершить сессию юзера (кикнуть юзера)
+сначала узнаем id юзера
+    w
+    pkill -HUP -t pts/1
+
+Выполнить команду от имени другого пользователя:
+    su anotheruser -c "ls -la"
+
+Косвенно узнать дату установки ОС:
+    ls -ld /lost+found/
+
+Список GPG ключей репозиториев:
+    apt-key list
+
+Подключение к различным базам данных:
+psql -U user -h host -p port -d database --set=variable=value -W
+    -U, the PostgreSQL user you want to connect as
+    -h, the managed database’s hostname or IP address
+    -p, the TCP port on which the managed database is listening for connections
+    -d, the specific database you want to connect to
+    --set, precedes other connection variables and the variables’ values. For example, if you want to validate the database’s CA certificate when you connect, you would include --set=sslmode=require in your command
+    -W, which tells psql to prompt you for the PostgreSQL user’s password. Note that you could precede the psql command with PGPASSWORD=password, but it’s generally considered more secure to not include passwords on the command line
+*********
+mysqlsh -u user -p -h host -P port -D database --sql
+    -u, the MySQL user you want to connect as
+    -p, tells mysqlsh to prompt for the user’s password. You could include your password directly in the connection command following the -p flag (without a space, as in -ppassword) but, for security reasons, this is generally not recommended
+    -h, the database’s hostname or IP address
+    -P, the TCP port on which MySQL is listening for connections
+    -D, the specific database you want to connect to
+*********
+redli --tls -h host -a password -p port
+    -h, the host to connect to. This can either be a hostname or an IP address
+    -a, the password used to authenticate to the Redis instance
+    -p, the port to connect to
+*********
+mongo "mongodb://username:password@managed_db_hostname_or_URL:port/connection_options"
+    mongodb://: this prefix specifies that the elements following it adhere to MongoDB’s connection URI format
+    username: the name of your MongoDB user
+    password: your MongoDB user’s password
+    managed_db_hostname_or_URL: the host where your MongoDB database can be accessed
+    port: the port number on which your managed MongoDB instance is running. It’s only necessary to include this if your database is running on a port other than Mongo’s default, 27017
+    connection_options: additional connection options
+
+mongo "mongodb://username:password@managed_db_hostname_or_URL:port/connection_options" --tls --tlsCAFile /path/to/CA/file
+*********
+
+Быстрый способ зашифровать/расшифровать файл:
+    gpg -c file.txt
+    gpg -d file.txt
+
+Игнорировать self signed certificate:
+    curl --insecure -I https://192.168.33.109
+*******************************************
+Общая информация о железе. С ключом -v информация будет более подробная.
+    lspci
+
+Процессор
+    lshw -c cpu
+    dmidecode --type processor
+    cat /proc/cpuinfo
+
+Материнская плата
+    dmidecode --type baseboard
+
+Оперативная память
+    lshw -short | grep -i "memory"
+    dmidecode --type memory
+
+Диски (apt/dnf install smartmontools)
+    smartctl -i /dev/sda
+    lsblk -a
+    lshw -class disk -class storage
+*******************************************
+просканировать порты:
+   netcat -z -v domain.com 1-1000
+
+Общение между двумя машинами:
+   на 1-ой: netcat -l 4444
+   на 2-ой: netcat domain.com 4444
+   дальше пишем сообщение, жмем Enter
+*******************************************
+Лог ошибочных попыток логина:
+    faillog
+
+Лог последних логинов в систему:
+    lastlog | less
+*******************************************
+Системные сообщения
+dmesg -T
+dmesg -T --level=emerg,alert,crit,err,warn
+*******************************************
+Скачать файл и сохранить под другим именем
+    curl -o rockylist.txt https://mirror.yandex.ru/rockylinux/imagelist-rocky
+
+Игнорирование ошибок сертификатов
+    curl --insecure https://10.20.30.1/test_app
+    curl -k https://10.20.30.1/test_app
+*******************************************
+Переименовать ветку в git (переходим на нее и переименовываем):
+    git checkout develop
+    git branch -m slurm_develop
+*******************************************
+На один коммит назад:
+    git checkout HEAD^
+    git checkout master
+
+на два коммита назад:
+    git checkout HEAD^^
+*******************************************
+Привязать еще один удаленный репозиторий, если с названием origin уже есть:
+git remote add origin git@gitlab.slurm.io:git_sXXXXXX/slurm_ssh_remote_push.git
+меняем origin на нужное название, например gitlab_repo, то есть команда:
+git remote add gitlab_repo git@gitlab.slurm.io:git_s014966/slurm_ssh_remote_push.git
+потом
+git push -u gitlab_repo master
+*******************************************
+Настраиваем git:
+git config --global user.name "Artem Listopad"
+git config --global user.email "rakvay@mail.ru"
+git config --global core.editor nano
+*******************************************
+Правильное использование rebase:
+
+git fetch # скачиваем изменения с сервера
+# надо находиться в ветке, которую вы хотите обновить
+# вместо origin/master нужно вписать вашу mainstream-ветку
+git rebase origin/master
+# далее, если возник конфликт, исправляем его и делаем 
+git add file-with-conflict.go
+git rebase --continue
+# повторяем до тех пор, пока не появится сообщение
+# Successfully rebased and updated ...
+*******************************************
+Настраиваем фаервол:
+https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
+*******************************************
+Сканирование подсети или отдельных адресов:
+    nmap 192.168.1.0/24 или nmap 192.168.1.*
+    nmap 192.168.1.1,2,3
+
+Быстрый скан сети пингом. Позволяет сразу увидеть, какие хосты в сети запущены и отвечают на пинг.
+    nmap -sP 192.168.1.0/24
+
+Скан хоста, не отвечающего на пинг. Актуально, если открытые порты есть, но хост не отвечает на icmp запросы.
+    nmap -Pn 192.168.1.1
+
+Быстрое сканирование. Если не добавить ключи, увеличивающие скорость, дефолтный скан будет длиться очень долго. 
+    nmap -F 192.168.1.1
+    nmap -T4 192.168.1.1
+
+Подробный скан всех портов хоста. Небольшой скрипт nmap.sh, который по очереди подробно сканирует все открытые порты. Процесс может длиться долго.
+    #!/bin/bash
+    ports=$(nmap -p- --min-rate=500 $1 | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
+    nmap -p$ports -A $1
+Использовать
+./nmap.sh 192.168.1.1
+*******************************************
+показать все строки без символа # в начале:
+   grep "^[^#]" /etc/graylog/server/server.conf
+*******************************************
+простейший балансировщик на nginx:
+
+server {
+   listen       80 default_server;
+   server_name graylog.artem.home;
+
+   location / {
+       proxy_set_header Host $http_host;
+       proxy_set_header X-Forwarded-Host $host;
+       proxy_set_header X-Forwarded-Server $host;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Graylog-Server-URL http://$server_name/;
+       proxy_pass http://graylog-web-cluster;
+   }
+}
+    upstream graylog-web-cluster {
+        server 192.168.33.21:9000 max_fails=3 fail_timeout=30s;
+        server 192.168.33.22:9000 max_fails=3 fail_timeout=30s;
+        server 192.168.33.23:9000 max_fails=3 fail_timeout=30s;
+    }
+
+*******************************************
+мониторим сессию удаленного админа при помощи screen:   
+   https://habr.com/ru/post/572244/
+*******************************************
+get list of interfaces:
+    ls /sys/class/net
+*******************************************
+netplan ubuntu 18.04, for example:
+
+ls /sys/class/net   -   get list of interfaces
+
+sudo netplan generate
+sudo /etc/netplan/01-netcfg.yaml
+
+DHCP:
+network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        eth1:
+            dhcp4: true
+
+Static IP:
+network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        eth1:
+            addresses:
+                - 192.168.66.245/24
+
+sudo netplan try
+sudo netplan apply
+*******************************************
+Docker:
+Наиболее частые команды, которые приходится использовать, это запуск контейнера:
+docker run -d -p 80:80 --restart=always --name nginx-proxy nginx
+
+Просмотр списка запущенных и всех контейнеров:
+docker ps
+docker ps -a
+
+Просмотр образов:
+docker images
+
+Удаление образов, одного или сразу всех:
+docker rmi grafana/grafana 
+docker rmi $(docker images -a -q)
+
+Вход в консоль контейнера:
+docker exec -it nginx-proxy bash
+
+Просмотр логов контейнера:
+docker logs nginx-proxy
+docker logs --tail 100 nginx-proxy
+
+Статистика потребляемых ресурсов контейнера или группы контейнеров:
+docker stats grafana7
+docker stats container1 container2
+docker stats grafana7 --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
+
+Просмотр запущенных процессов в контейнере:
+docker top grafana7
+
+Вот пожалуй и всё из основного, что обычно нужно. Для полноты картины добавлю еще несколько полезных команд, которые нужны реже, но всё равно пригодятся.
+
+Информация о контейнере:
+docker inspect nginx-proxy
+
+Выполнить команду в контейнере:
+docker exec -it nginx-proxy /usr/sbin/nginx -s reload
+
+Очистить неиспользуемые данные:
+docker system prune
+
+Проверить занимаемое докером место:
+docker system df
+*******************************************
