@@ -1,0 +1,13 @@
+- hosts: wireguard
+  become: true
+  
+  roles:
+    - role: raylas.wireguard
+      tags:
+        - vpn
+
+  tasks:
+  - name: Ensure wireguard service is started
+    ansible.builtin.service:
+      name: wg-quick@wg0
+      state: started

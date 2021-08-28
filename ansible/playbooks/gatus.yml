@@ -1,0 +1,29 @@
+- hosts: gatus
+
+  tasks:
+  - name: Update gatus status page config
+    ansible.builtin.copy:
+      src: ./files/config.yaml
+      dest: /home/internal/artem/gatus/config.yaml
+
+  - name: Stop gatus container
+    docker_container:
+      name: gatus
+      state: stopped
+      
+  - name: Remove gatus container
+    docker_container:
+      name: gatus
+      state: absent
+    
+  - name: Start a gatus container
+    docker_container:
+      name: gatus
+      image: twinproduction/gatus
+      state: started
+      ports:
+       - "8080:8080"
+      mounts:
+        - type: bind
+          source: /home/internal/artem/gatus/config.yaml
+          target: /config/config.yaml

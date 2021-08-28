@@ -1,0 +1,12 @@
+- name: Provision LXC on Proxmox
+  hosts: proxmox
+  become: true
+
+  roles:
+    - role: geerlingguy.pip
+      tags:
+        - pip
+    
+    - role: bellackn.proxmox_lxc
+      tags:
+        - lxc

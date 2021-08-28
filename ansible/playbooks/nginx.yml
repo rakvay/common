@@ -1,0 +1,31 @@
+- hosts: nginx
+  become: true
+  
+  roles:
+    - role: geerlingguy.pip
+      tags:
+        - pip
+        
+    - role: dudefellah.certbot
+      tags:
+        - ssl
+        
+    - role: jdauphant.nginx
+      tags:
+        - nginx
+
+# Remove /etc/nginx/sites-available/default file because we don't need it
+  tasks:
+  - name: Remove default nginx config
+    ansible.builtin.file:
+      path: /etc/nginx/sites-available/default
+      state: absent
+    
+# Install nginx_exporter for prometheus
+- name: Install nginx_exporter for nginx metrics collection
+  hosts: nginx
+  become: true
+  roles:
+    - role: bdellegrazie.nginx_exporter
+      tags:
+        - nginx_exporter
