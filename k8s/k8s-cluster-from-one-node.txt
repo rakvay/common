@@ -1,0 +1,120 @@
+# https://te.legra.ph/Podnimaem-klaster-Kubernetes-iz-odnoj-nody-pod-Linux-08-14
+
+Поднимаем простейший однонодовый кластер Kubernetes на машине под управлением Ubuntu Linux 18.04 LTS.
+
+Сразу отмечу, что по умолчанию Kubernetes торчит наружу. Если вы поднимаете ноду Kubernetes где-то на VDS просто для экспериментов, то скорее всего хотите закрыть на машине все порты кроме 22-го:
+
+
+sudo ufw allow ssh
+
+sudo ufw default deny incoming
+
+sudo ufw enable
+
+
+Настройки безопасности для прочих случаев зависят от вашего сценария использования Kubernetes, и потому их не представляется возможным рассмотреть в рамках этой статьи.
+
+Далее ставим Docker. В стандартных пакетах дистрибутива оказалась достаточно свежая на данный момент версия 18.09.2, поэтому этими пакетами и воспользуемся:
+
+
+sudo apt install docker.io
+
+sudo systemctl enable docker
+
+sudo systemctl start docker
+
+
+# Для доступа к /var/run/docker.sock говорим:
+
+sudo usermod -a -G docker eax
+
+# где `eax` - имя вашего пользователя.
+
+# После выполнения команды понадобится перелогиниться.
+
+
+Затем создаем /etc/apt/sources.list.d/kubernetes.list:
+
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+
+Здесь были использованы пакеты для Ubuntu 16.04 Xenial, поскольку пакетов для 18.04 Bionic еще не занесли. Возможно, они появятся к моменту, когда вы будете читать эти строки. В этом случае, конечно же, предпочтительнее использовать пакеты для Bionic.
+
+Далее говорим:
+
+# под рутом
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+
+  apt-key add
+
+
+# Если в системе включен swap, k8s откажется стартовать.
+
+# Swap отключается командой `swapoff -a` и последующим
+
+# редактированием /etc/fstab.
+
+
+# под обычным пользователем
+
+sudo apt update
+
+# смотрим список доступных версий
+
+apt-cache madison kubeadm
+
+# самые последние версии кубера не обязательно самые стабильные
+
+sudo apt install kubeadm=1.14.9-00 kubelet=1.14.9-00 kubectl=1.14.9-00
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 \
+
+  --apiserver-advertise-address=YOUR_EXTERNAL_IP \
+
+  --kubernetes-version stable-1.14
+
+mkdir ~/.kube
+
+sudo cp /etc/kubernetes/admin.conf ~/.kube/config
+
+sudo chown eax:eax ~/.kube/config
+
+
+За сетевое взаимодействие между контейнерами в Kubernetes отвечает специальный компонент, плагин Container Network Interface (CNI). Существует множество реализаций плагинов CNI. Здесь мы остановимся на установке лишь двух вариантов — Flannel, являющегося плагином L2 (канальный уровень, это на котором работает Ethernet), и Calico, являющегося плагином L3 (сетевой уровень, IP, ICMP, BGP и другие).
+
+Для установки Flannel говорим:
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/⏎
+
+ master/Documentation/kube-flannel.yml
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/⏎
+
+ master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+
+
+Если же в это время суток вы предпочитаете Calico:
+
+# В kubeadmin init можно было просто указать:
+
+# --pod-network-cidr=192.168.0.0/16
+
+# Но поскольку мы указали другую подсеть (для Flannel),
+
+# обновим параметр таким образом:
+
+kubeadm config upload from-flags --pod-network-cidr=192.168.0.0/16
+
+kubectl apply -f https://docs.projectcalico.org/v3.6/getting-started/⏎
+
+ kubernetes/installation/hosted/kubernetes-datastore/⏎
+
+ calico-networking/1.7/calico.yaml
+
+
+Наконец, разрешим запуск подов на мастер-ноде, а то по умолчанию оно запрещено, для секьюрности:
+
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+
+Ну вот, кластер из одной ноды поднят, можно пользоваться. По большому счету, мы получили то же самое, что дает Docker Desktop пользователям Windows и MacOS, только под Linux.

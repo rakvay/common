@@ -1,0 +1,34 @@
+- hosts: debian
+  become: true
+  
+  roles:
+    - role: oefenweb.apt
+      tags:
+        - update
+    - role: weareinteractive.apt
+      tags:
+        - apt
+    - role: singleplatform-eng.users
+      tags:
+        - users
+    - role: weareinteractive.sudo
+      tags:
+        - sudo
+    - role: willshersystems.sshd
+      tags:
+        - sshd
+    - role: linuxhq.sysctl
+      tags:
+        - sysctl
+    - role: 0x0i.journald
+      tags:
+        - journald
+
+# We're installing node_exporter on all nodes
+- name: Install node_exporter for metrics collection
+  hosts: all
+  become: true
+  roles:
+    - role: cloudalchemy.node_exporter
+      tags:
+        - node_exporter
