@@ -1,0 +1,3 @@
+terraform/terraform-up-and-running-code/
+*.tfstate
+*.tfstate.backup
