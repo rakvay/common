@@ -1,53 +1,53 @@
-######1. Create backup for 1 DB with compression:
-**mongodump --host=localhost --gzip -d HABR --archive=/tmp/backup-db-habr.gz**
+1. Create backup for 1 DB with compression:
+mongodump --host=localhost --gzip -d HABR --archive=/tmp/backup-db-habr.gz
 
 restore:
-**mongorestore --gzip --archive=backup-db-habr.gz**
+mongorestore --gzip --archive=backup-db-habr.gz
 
 -----
 
-######2. Backup all DB without compression:
-**mongodump --out /tmp/backup/**
+2. Backup all DB without compression:
+mongodump --out /tmp/backup/
 
 restore:
-**mongorestore --drop --dir /tmp/backup**
+mongorestore --drop --dir /tmp/backup
     
-Параметр **--drop** используется для удаления коллекции перед импортом(если она существует),во избежания ошибки duplicate key errors
+Параметр --drop используется для удаления коллекции перед импортом(если она существует),во избежания ошибки duplicate key errors
     
 Восстановление определенной коллекции (например, коллекции postshabr в базе данных HABR) с бекапа всех баз данных:
 
-**mongorestore --drop -v --dir /root/backup --nsInclude 'habr.postshabr'**
+mongorestore --drop -v --dir /root/backup --nsInclude 'habr.postshabr'
 
 Восстановление всех баз данных и всех коллекций, за исключением определенной коллекции(например, коллекции postshabr в базе habrdb)
 
-**mongorestore --drop -v --dir /root/backup --nsExclude 'habr.postshabr'**
+mongorestore --drop -v --dir /root/backup --nsExclude 'habr.postshabr'
 -----
 
-######3. Backup all DB with compression:
-**mongodump --gzip --out /tmp/backup**
+3. Backup all DB with compression:
+mongodump --gzip --out /tmp/backup
 
 restore:
-**mongorestore --gzip --drop --dir /mnt/backup**
+mongorestore --gzip --drop --dir /mnt/backup
 
-######4. Backup all DB with compression in an singl archive:
-**mongodump --gzip --archive=/tmp/backup/mybackup.gz**
-
-restore:
-**mongorestore --gzip --drop --archive=/tmp/backup/mybackup.gz**
-
-######5. Backup specific DB with compression:
-**mongodump --gzip -d HABR2**
+4. Backup all DB with compression in an singl archive:
+mongodump --gzip --archive=/tmp/backup/mybackup.gz
 
 restore:
-**mongorestore --gzip --dir /tmp/backup/**
+mongorestore --gzip --drop --archive=/tmp/backup/mybackup.gz
 
-######6. Backup specific collection from DB with compression:
-**mongodump --gzip -d HABR2 -c address2**
+5. Backup specific DB with compression:
+mongodump --gzip -d HABR2
+
+restore:
+mongorestore --gzip --dir /tmp/backup/
+
+6. Backup specific collection from DB with compression:
+mongodump --gzip -d HABR2 -c address2
 
 Просмотр содержимого bson-файла:
 
-**zcat posts.bson.gz | bsondump --pretty**
+zcat posts.bson.gz | bsondump --pretty
 
-######7. Backup all the DB except one collection with compression:
-**mongodump --gzip -d HABR2 --excludeCollection=address2**
+7. Backup all the DB except one collection with compression:
+mongodump --gzip -d HABR2 --excludeCollection=address2
 
