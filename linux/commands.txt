@@ -347,5 +347,25 @@ LXC
     # 6. посмотреть файловую систему контейнера
     ls -al /var/lib/lxc/myapp/rootfs
 *******************************************
+Find the PID of a running program
+    pidof bash
 
+Find a PID by file
+    fuser --user ~/example.txt 
+
+Get a process name by PID
+    ps 3234
+
+List all processes
+    ps -e | less
+
+List just your processes
+    ps -U tux | less
+    pstree -U tux -u --show-pids
+
+List just your processes with context
+    ps -U tux -u
+
+Troubleshoot with PIDs
+    pmap 1776
 *******************************************
