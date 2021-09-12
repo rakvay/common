@@ -1,0 +1,12 @@
+wget -O jquery.min.js https://code.jquery.com/jquery-3.6.0.min.js   -   save file by another name
+wget -P Downloads/  https://code.jquery.com/jquery-3.6.0.min.js     -   download to specific directory
+wget -q  https://code.jquery.com/jquery-3.6.0.min.js                -   quiet mode
+wget -q --show-progress https://code.jquery.com/jquery-3.6.0.min.js -   showing the download progress bar
+wget -i images.txt -P Downloads/ -q --show-progress                 -   add links to images.txt file and download them by wget
+wget -b https://cdn.pixabay.com/photo/2018/grass-3206938__340.jpg   -   downloading in the background
+
+Interacting with REST APIs
+wget -O- https://jsonplaceholder.typicode.com/posts?_limit=2        -   sending GET requests
+wget --method=post -O- -q --body-data='{"title": "Wget POST","body": "Wget POST example body","userId":1}' --header=Content-Type:application/json https://jsonplaceholder.typicode.com/posts                          -   sending POST requests
+wget --method=put -O- -q --body-data='{"title": "Wget PUT", "body": "Wget PUT example body", "userId": 1, "id":1}' --header=Content-Type:application/json https://jsonplaceholder.typicode.com/posts/1                   -   sending PUT requests
+wget --method=delete -O- -q --header=Content-Type:application/json https://jsonplaceholder.typicode.com/posts/1       -   sending DELETE requests
