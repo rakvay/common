@@ -1,0 +1,27 @@
+set the default UFW incoming policy to deny:
+    sudo ufw default deny incoming
+
+set the default UFW outgoing policy to allow:
+    sudo ufw default allow outgoing
+
+sudo ufw app list
+sudo ufw allow OpenSSH
+sudo ufw allow ssh   -   Allowing SSH by Service Name
+sudo ufw allow 22
+sudo ufw show added
+sudo ufw enable
+sudo ufw allow 6000:6007/tcp
+sudo ufw allow 6000:6007/udp
+sudo ufw allow from 203.0.113.4
+sudo ufw allow from 203.0.113.4 to any port 22
+sudo ufw allow from 203.0.113.0/24
+sudo ufw allow from 203.0.113.0/24 to any port 22
+sudo ufw allow in on eth0 to any port 80
+sudo ufw allow in on eth1 to any port 3306
+sudo ufw deny http
+sudo ufw deny from 203.0.113.4
+sudo ufw deny out 25
+sudo ufw status numbered
+sudo ufw delete 2
+sudo ufw status verbose
+sudo ufw disable
