@@ -1,0 +1,38 @@
+List all open files:
+    sudo lsof | less
+    
+List open files by username:
+    sudo lsof -u [username]
+    
+List Open files except for certain user:
+    sudo lsof -u ^root
+    
+List open files by process:
+    sudo lsof -c ssh
+    
+List open files by filename:
+    sudo lsof /var/log/messages
+    
+List open files by Process ID:
+    sudo lsof -p 2
+    sudo lsof -p 2,3
+    sudo lsof -p ^1
+    
+List open files containing Directory:
+    sudo lsof +d /var/log
+    sudo lsof +D /var/log
+    
+List open files with network protocol 
+    sudo lsof -i TCP
+    sudo lsof -i UDP 
+
+List open files by port number:
+    sudo lsof -i :443
+    sudo lsof -i :80,443
+    sudo lsof -i TCP:1-49151
+    
+List open files by IPv4/IPv6:
+    sudo lsof -i4
+    sudo lsof -i6
+    
+sudo lsof -a +L1   -   посмотреть открытые дескрипторы мертвых процессов, которые жрут место на диске
