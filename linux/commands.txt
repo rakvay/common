@@ -388,3 +388,21 @@ Reboot is required to ensure that your system benefits from these updates.
 
 More information:
 https://access.redhat.com/solutions/27943
+*******************************************
+last
+    Who recently used the system
+
+last root
+    When was the last time root logged in as user
+
+lastb
+    Shows all bad login attempts into the system
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
