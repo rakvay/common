@@ -1,0 +1,34 @@
+Dissalow run pods on some nodes can be reached by taint:
+    kubectl taint node artem-kube-cluster-node-axbtu node-role.kubernetes.io/ingress=:NoSchedule     -      prohibit run pods on artem-kube-cluster-node-axbtu node
+    
+For ingress pods can runs on ingress nodes after taint we should add toleration parameter for ingress nodes:
+  tolerations:
+  - key: "node-role.kubernets.io/ingress"
+    operator: "Exists"
+    
+and configure nodeSelector:
+  nodeSelector:
+    kubernetes.io/os: "linux"
+    node-role.kubernetes.io/ingress: "true"
+    
+To avoid situation when all the ingress pods will run on the same node we should use podAntiAffinity parameter:
+  affinity:  
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - ingress-nginx
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - ingress-nginx
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - controller
+          topologyKey: kubernetes.io/hostname
