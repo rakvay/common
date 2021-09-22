@@ -270,6 +270,30 @@ network:
             addresses:
                 - 192.168.66.245/24
 
+WiFi (apt install wpasupplicant   -   for this settings):
+network:
+  version: 2
+  renderer: networkd
+  wifis:
+    wlp2s0:
+      dhcp4: true
+      access-points:
+        MyWiFiSSID:
+          password: Pa$$word_1
+     
+ens33: 
+  dhcp4: false 
+  addresses:
+    - 192.168.233.154/24
+  gateway4: 192.168.233.2 
+  nameservers:
+  addresses:
+    - 1.1.1.1
+    - 8.8.8.8
+  routes:
+    - to: 192.168.111.0/24
+      via: 192.168.233.101
+      
 sudo netplan try
 sudo netplan apply
 *******************************************
