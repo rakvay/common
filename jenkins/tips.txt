@@ -1,0 +1,5 @@
+Restart jenkins from GUI:
+jenkins-ip-address:8080/restart
+
+Print env variables:
+jenkins-ip-address:8080/env-vars.html/
