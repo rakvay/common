@@ -3,3 +3,6 @@ jenkins-ip-address:8080/restart
 
 Print env variables:
 jenkins-ip-address:8080/env-vars.html/
+
+Download jenkins-cli utility:
+jenkins-ip-address:8080/jnlpJars/jenkins-cli.jar
