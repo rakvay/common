@@ -1,6 +1,9 @@
 скрипт, чтобы быстро посмотреть, кто занимает оперативную память:
 ps axo rss,comm,pid | awk '{ proc_list[$2] += $1; } END { for (proc in proc_list) { printf("%d\t%s\n", proc_list[proc],proc); }}' | sort -n | tail -n 10 | sort -rn | awk '{$1/=1024;printf "%.0fMB\t",$1}{print $2}'
 
+проверить какие процессы больше всего используют swap:
+for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done
+
 утилита для мониторинга, netdata
 bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 
