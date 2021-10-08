@@ -463,7 +463,14 @@ rpm2cpio package.rpm | cpio -t
 Извлечение содержимого пакета package.rpm в текущую директорию. Будет воссоздана вся структура каталогов, которые используются в пакете.
 rpm2cpio package.rpm | cpio -idv
 *******************************************
+Renaming/moving files with suffixes quickly:
+cp /home/foo/realllylongname.cpp{,-old}
 
+This expands to:
+cp /home/foo/realllylongname.cpp /home/foo/realllylongname.cpp-old
+
+List only subdirectories in the current one:
+ls -dl */
 *******************************************
 
 *******************************************
