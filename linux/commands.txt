@@ -502,5 +502,10 @@ nginx_conf - название правила аудита
 
 События аудита записываются в обычный лог файл. Чаще всего это /var/log/audit/audit.log. Для того, чтобы изменения этого файла не привели к потери важных событий имеет смысл дополнительно настроить отправку событий на удаленный сервер хранения логов.
 *******************************************
+glances - Real time system monitoring tool
+Glances is a cross-platform monitoring application that can function in client/server mode and offers a lot of information on a small screen.
+Glance can monitor CPU, load average, memory, network interfaces, Disk I/O, processes, and file system spaces utilization.
+glances without any options display the real-time system information:
 
+$ glances
 *******************************************
