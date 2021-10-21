@@ -509,3 +509,19 @@ glances without any options display the real-time system information:
 
 $ glances
 *******************************************
+Display Linux Uptime in pretty format
+uptime -p
+
+Display the time/date since when the system has been running
+uptime -s
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
