@@ -466,6 +466,9 @@ rpm2cpio package.rpm | cpio -idv
 Renaming/moving files with suffixes quickly:
 cp /home/foo/realllylongname.cpp{,-old}
 
+To create a backup file with date:
+cp foo.txt{,."$(date +%Y%m%d-%H%M%S)"}
+
 This expands to:
 cp /home/foo/realllylongname.cpp /home/foo/realllylongname.cpp-old
 
