@@ -515,7 +515,12 @@ uptime -p
 Display the time/date since when the system has been running
 uptime -s
 *******************************************
+Полезный сайт c полезными командами, смотреть из консоли:
+curl cheat.sh/command
 
+вместо command ввести команду, например:
+curl cheat.sh/less
+curl cheat.sh/systemctl
 *******************************************
 
 *******************************************
