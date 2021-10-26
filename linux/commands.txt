@@ -566,5 +566,12 @@ tar tf archive.tgz
 # extract file
 tar xf archive.tgz filename
 *******************************************
+To sync the contents of dir1 to dir2 on the same system, type:
 
+rsync -av --progress --delete dir1/ dir2
+
+    -a, --archive - archive mode
+    --delete - delete extraneous files from dest dirs
+    -v, --verbose - verbose mode (increase verbosity)
+    --progress - show progress during transfer
 *******************************************
