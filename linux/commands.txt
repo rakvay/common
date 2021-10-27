@@ -577,6 +577,9 @@ rsync -av --progress --delete dir1/ dir2
 *******************************************
 how to find all files larger than 20MB:
 find / -type f -size +20M
+
+how to find files that have been modified on your system in the past 60 minutes?
+find / -mmin -60 -type f
 *******************************************
 
 *******************************************
