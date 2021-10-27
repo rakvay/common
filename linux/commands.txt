@@ -575,3 +575,14 @@ rsync -av --progress --delete dir1/ dir2
     -v, --verbose - verbose mode (increase verbosity)
     --progress - show progress during transfer
 *******************************************
+how to find all files larger than 20MB:
+find / -type f -size +20M
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
+
+*******************************************
