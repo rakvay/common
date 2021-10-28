@@ -581,7 +581,29 @@ find / -type f -size +20M
 how to find files that have been modified on your system in the past 60 minutes?
 find / -mmin -60 -type f
 *******************************************
+get unique ID of your server:
+hostid
+cat /etc/machine-id
+sudo dmidecode | grep -i uuid
+*******************************************
+Расшарить текст из консоли в браузер (чтобы скинуть ссылку другу)
+    htop | nc termbin.com 9999
+    htop | nc seashells.io 1337     -     удобный сервис
 
+Быстро поделиться файлом (будет сгенерена ссылка и даже qr code)
+    curl --upload-file mydir/file.txt https://transfer.sh/hello.txt
+
+Погода
+    wttr.in/Kiev
+
+Курс валют
+    rate.sx/btc
+
+Сгенерить QR code и записать его в файл (кодируем слово lenovo)
+    curl qrenco.de/lenovo > myqrcode
+
+curl parrot.live
+nc rya.nc 1987
 *******************************************
 
 *******************************************
