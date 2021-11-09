@@ -616,7 +616,16 @@ ICMP packets are identified by the 'protocol' field in the IP datagram header. I
 
 The IP protocol value for ICMP is 1. The protocol field is part of the IP header and identifies what is in the data portion of the IP datagram.
 *******************************************
+dig
 
+Просмотр А записи:
+# dig serveradmin.ru
+
+Просмотр конкретных записей, например ns серверов:
+# dig serveradmin.ru ns
+
+Просмотр записей через конкретный dns сервер, например ns1.selectel.org:
+# dig @ns1.selectel.org serveradmin.ru ns
 *******************************************
 
 *******************************************
