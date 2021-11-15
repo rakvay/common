@@ -664,7 +664,17 @@ MTR можно запускать как на постоянную работу,
 # mtr --tcp gmail.com
 # mtr --udp gmail.com
 *******************************************
+How to Find Which Package a File Belongs in Linux
 
+dpkg -S filename
+dpkg-query -S filename
+dpkg -S /bin/ls
+
+dnf provides filename
+dnf provides *filename
+dpkg-query --search '/path/to/file'
+rpm -qf /bin/ls
+yum whatprovides netstat
 *******************************************
 
 *******************************************
