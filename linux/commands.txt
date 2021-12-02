@@ -685,5 +685,17 @@ echo "$tmp" > file
 systemd-detect-virt
 hostnamectl status
 *******************************************
+For monitoring swap space usage:
 
+    cat /proc/swaps - to see total and used swap size
+    grep SwapTotal /proc/meminfo - to show total swap space
+    free - to display the amount of free and used system memory (also swap)
+    vmstat - to check swapping statistics
+    top, htop- to check swap space usage
+    atop - to show is that your system is overcommitting memory
+    or use one-liner shell command to list all applications with how much swap space search is using in kilobytes:
+
+for _fd in /proc/*/status ; do
+  awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $_fd
+done | sort -k 2 -n -r | less
 *******************************************
