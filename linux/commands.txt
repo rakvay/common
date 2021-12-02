@@ -699,3 +699,10 @@ for _fd in /proc/*/status ; do
   awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $_fd
 done | sort -k 2 -n -r | less
 *******************************************
+Umask 	File result 	    Directory result
+000 	666 rw- rw- rw- 	777 rwx rwx rwx
+002 	664 rw- rw- r-- 	775 rwx rwx r-x
+022 	644 rw- r-- r-- 	755 rwx r-x r-x
+027 	640 rw- r-- --- 	750 rwx r-x ---
+077 	600 rw---- --- 	    700 rwx --- ---
+277 	400 r-- --- --- 	500 r-x --- ---
