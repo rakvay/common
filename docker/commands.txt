@@ -40,3 +40,7 @@ docker system prune
 
 Проверить занимаемое докером место:
 docker system df
+
+Копировать файлы в/из Docker-контейнера:
+docker cp localfile container-name:/path-inside-docker-container
+docker cp container-name:/path-inside-docker-container localfile
