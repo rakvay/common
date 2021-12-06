@@ -1,0 +1,49 @@
+Но values.yaml — статический способ задания величин. Очевидно, что нам нужно менять некоторые values при деплое в конкретное окружение. В Helm для этого предусмотрено несколько способов:
+
+Передача через директиву --set. Мы можем передавать одну:
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop
+
+или несколько директив set:
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop \
+     --set app.databaseurl=$POSTGRESQL_PASSWORD_DEV
+
+Передавать несколько значений через запятую в одной директиве set:
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop \
+     --set app.databaseurl=$POSTGRESQL_PASSWORD_DEV \
+     --set app.cloud=aws,app.storage.storageclass.aws=gp3
+
+Передавать списки:
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop \
+     --set app.databaseurl=$POSTGRESQL_PASSWORD_DEV \
+     --set app.cloud=aws,app.storage.storageclass.aws=gp3 \
+     --set alerts.receivers={“dev@company.local”,”dev@subcompany.com”}
+
+Передавать значения в списки:
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop \
+     --set app.databaseurl=$POSTGRESQL_PASSWORD_DEV \
+     --set app.cloud=aws,app.storage.storageclass.aws=gp3 \
+     --set alerts.receivers={“dev@company.local”,”dev@subcompany.com”} \
+     --set alerts.receivers[0].host="smtpdev.subcompany.com"
+
+Но это уже, пожалуй, слишком неудобно. Поэтому мы можем передавать заполненные файлы values через директивы -f или --values (также один или несколько).
+
+helm upgrade --install -n ci-namespace ci-release path/to/chart \
+     --set global.env=develop \
+     --set app.databaseurl=$POSTGRESQL_PASSWORD_DEV \
+     --set app.cloud=aws,app.storage.storageclass.aws=gp3 \
+     --set alerts.receivers={“dev@company.local”,”dev@subcompany.com”} \
+     --set alerts.receivers[0].host="smtpdev.subcompany.com" \
+     --values=./path/to/app.dev.yaml \
+     --values=./path/to/alerts.dev.yaml
+
+При этом значения, переданные через --set или --values, будут переопределять те, которые описаны в values.yaml чарта. Также можно передавать значения по ключам, которые не описаны в values.yaml — они также будут доступны. Но если в шаблоне используется значение, которого нет в values.yaml чарта, его нужно передать при деплое (или сделать заглушку, например, функцией default go templates), иначе рендер релиза сломается.
