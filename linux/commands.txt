@@ -714,7 +714,14 @@ user1 ALL=(user2) NOPASSWD: /opt/scripts/bin/generate.sh
 
 The command paths must be absolute! Then call sudo -u user2 /opt/scripts/bin/generate.sh from a user1 shell.
 *******************************************
+What are the possible states of a process in Linux?
 
+Running (R)
+Uninterruptible Sleep (D) - The process is waiting for I/O
+Interruptible Sleep (S)
+Stopped (T)
+Dead (x)
+Zombie (z)
 *******************************************
 
 *******************************************
