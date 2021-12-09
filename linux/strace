@@ -1,0 +1,13 @@
+Example of attach to the process
+
+strace -p <PID> - to attach a process to strace.
+
+strace -e trace=read,write -p <PID> - by this you can also trace a process/program for an event, like read and write (in this example). So here it will print all such events that include read and write system calls by the process.
+
+Other such examples
+
+    -e trace=network - trace all the network related system calls.
+    -e trace=signal - trace all signal related system calls.
+    -e trace=ipc - trace all IPC related system calls.
+    -e trace=desc - trace all file descriptor related system calls.
+    -e trace=memory - trace all memory mapping related system calls.
