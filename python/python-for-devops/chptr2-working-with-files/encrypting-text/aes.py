@@ -9,4 +9,4 @@ f = Fernet(key)
 message = b"Secrets go here"
 encrypted = f.encrypt(message)
 f = Fernet(key)
-f.decrypt(encrypted)
+print(f.decrypt(encrypted))
