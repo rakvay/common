@@ -3,10 +3,14 @@
 import os
 
 # List the contents of a directory
-os.listdir('.')
+mydir = '/home/user/'
+mydir_content = os.listdir(mydir)
+print(mydir_content)
 
 # Rename a file or directory
-os.rename('test__file.txt', 'test-file.txt')
+src = 'home/user/test__file.txt'
+dst = '/home/user/test-file.txt'
+os.rename(src, dst)
 
 # Change the permission settings of a file or directory
 os.chmod('test-file.txt', 0o777)
